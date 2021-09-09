@@ -10,7 +10,7 @@ const BRIDGE_URL = 'ws://localhost:8435'
 
 // Number of seconds to poll for Ledger Live and Tezos app opening
 const TRANSPORT_CHECK_LIMIT = 180
-const TRANSPORT_CHECK_DELAY = 1000
+const TRANSPORT_CHECK_DELAY = 10008
 
 const TARGET = 'BEACON-SDK-LEDGER-BRIDGE'
 
