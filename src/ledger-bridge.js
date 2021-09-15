@@ -1,11 +1,11 @@
 'use strict'
 
 import WebSocketTransport from '@ledgerhq/hw-transport-http/lib/WebSocketTransport'
-import Tezos from '@obsidiansystems/hw-app-xtz'
+// import Tezos from '@obsidiansystems/hw-app-xtz'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import regeneratorRuntime from 'regenerator-runtime'
 
-// const Tezos = require('@ledgerhq/hw-app-xtz').default
+const Tezos = require('@ledgerhq/hw-app-tezos').default
 
 // URL which triggers Ledger Live app to open and handle communication
 const BRIDGE_URL = 'ws://localhost:8435'
