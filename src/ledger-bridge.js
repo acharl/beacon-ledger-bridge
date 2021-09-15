@@ -1,7 +1,5 @@
 'use strict'
 
-import regeneratorRuntime from 'regenerator-runtime'
-import TransportU2F from '@ledgerhq/hw-transport-u2f'
 import WebSocketTransport from '@ledgerhq/hw-transport-http/lib/WebSocketTransport'
 import Tezos from '@obsidiansystems/hw-app-xtz'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
@@ -125,6 +123,7 @@ export default class BeaconLedgerBridge {
   async getAddress(derivationPath = BeaconLedgerBridge.defaultDerivationPath) {
     const app = await this.createApp()
     const result = await app.getAddress(derivationPath, true)
+    alert('HARIBOL')
     return result.publicKey
   }
 
