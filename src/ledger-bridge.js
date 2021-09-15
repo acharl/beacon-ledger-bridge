@@ -4,7 +4,8 @@ import regeneratorRuntime from 'regenerator-runtime'
 import TransportU2F from '@ledgerhq/hw-transport-u2f'
 import WebSocketTransport from '@ledgerhq/hw-transport-http/lib/WebSocketTransport'
 import Tezos from '@obsidiansystems/hw-app-xtz'
-const TransportWebHID = require('@ledgerhq/hw-transport-webhid').default
+import TransportWebHID from '@ledgerhq/hw-transport-webhid'
+
 // const Tezos = require('@ledgerhq/hw-app-xtz').default
 
 // URL which triggers Ledger Live app to open and handle communication
