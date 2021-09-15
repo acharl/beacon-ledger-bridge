@@ -114,30 +114,9 @@ export default class BeaconLedgerBridge {
   }
 
   async createApp(useLedgerLive = true) {
-    // if (this.transport) {
-    //   if (useLedgerLive) {
-    //     try {
-    //       await WebSocketTransport.check(BRIDGE_URL)
-    //       return this.app
-    //     } catch (_err) {}
-    //   } else {
-    //     return this.app
-    //   }
-    // }
-
-    // if (useLedgerLive) {
-    //   try {
-    //     await WebSocketTransport.check(BRIDGE_URL)
-    //   } catch (_err) {
-    //     window.open('ledgerlive://bridge?appName=Tezos Wallet')
-    //     await this.checkLedgerLiveTransport()
-    //   }
-
-    //   this.transport = await WebSocketTransport.open(BRIDGE_URL)
-    // } else {
-    //   this.transport = await TransportU2F.create()
-    // }
-
+    if (this.app) {
+      await this.app.transport.close()
+    }
     this.app = new Tezos(await TransportWebHID.create())
 
     return this.app
