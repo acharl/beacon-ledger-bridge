@@ -137,9 +137,7 @@ export default class BeaconLedgerBridge {
     //   this.transport = await TransportU2F.create()
     // }
 
-    if (!this.app) {
-      this.app = new Tezos(await TransportWebHID.create())
-    }
+    this.app = new Tezos(await TransportWebHID.create())
 
     return this.app
   }
