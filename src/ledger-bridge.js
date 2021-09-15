@@ -1,9 +1,11 @@
 'use strict'
 
+import regeneratorRuntime from 'regenerator-runtime'
 import TransportU2F from '@ledgerhq/hw-transport-u2f'
 import WebSocketTransport from '@ledgerhq/hw-transport-http/lib/WebSocketTransport'
-const TransportWebHID = require('@ledgerhq/hw-transport-webhid').default
 import Tezos from '@obsidiansystems/hw-app-xtz'
+const TransportWebHID = require('@ledgerhq/hw-transport-webhid').default
+// const Tezos = require('@ledgerhq/hw-app-xtz').default
 
 // URL which triggers Ledger Live app to open and handle communication
 const BRIDGE_URL = 'ws://localhost:8435'
@@ -111,34 +113,34 @@ export default class BeaconLedgerBridge {
   }
 
   async createApp(useLedgerLive = true) {
+    // if (this.transport) {
+    //   if (useLedgerLive) {
+    //     try {
+    //       await WebSocketTransport.check(BRIDGE_URL)
+    //       return this.app
+    //     } catch (_err) {}
+    //   } else {
+    //     return this.app
+    //   }
+    // }
+
+    // if (useLedgerLive) {
+    //   try {
+    //     await WebSocketTransport.check(BRIDGE_URL)
+    //   } catch (_err) {
+    //     window.open('ledgerlive://bridge?appName=Tezos Wallet')
+    //     await this.checkLedgerLiveTransport()
+    //   }
+
+    //   this.transport = await WebSocketTransport.open(BRIDGE_URL)
+    // } else {
+    //   this.transport = await TransportU2F.create()
+    // }
+
     if (!this.app) {
-      // if (this.transport) {
-      //   if (useLedgerLive) {
-      //     try {
-      //       await WebSocketTransport.check(BRIDGE_URL)
-      //       return this.app
-      //     } catch (_err) {}
-      //   } else {
-      //     return this.app
-      //   }
-      // }
-
-      // if (useLedgerLive) {
-      //   try {
-      //     await WebSocketTransport.check(BRIDGE_URL)
-      //   } catch (_err) {
-      //     window.open('ledgerlive://bridge?appName=Tezos Wallet')
-      //     await this.checkLedgerLiveTransport()
-      //   }
-
-      //   this.transport = await WebSocketTransport.open(BRIDGE_URL)
-      // } else {
-      //   this.transport = await TransportU2F.create()
-      // }
-
-      // this.app = new Tezos(this.transport)
       this.app = new Tezos(await TransportWebHID.create())
     }
+
     return this.app
   }
 
