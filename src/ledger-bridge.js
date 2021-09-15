@@ -1,11 +1,9 @@
 'use strict'
 
-import WebSocketTransport from '@ledgerhq/hw-transport-http/lib/WebSocketTransport'
-// import Tezos from '@obsidiansystems/hw-app-xtz'
-import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import regeneratorRuntime from 'regenerator-runtime'
-
-const Tezos = require('@ledgerhq/hw-app-tezos').default
+import TransportU2F from '@ledgerhq/hw-transport-u2f'
+import WebSocketTransport from '@ledgerhq/hw-transport-http/lib/WebSocketTransport'
+import Tezos from '@obsidiansystems/hw-app-xtz'
 
 // URL which triggers Ledger Live app to open and handle communication
 const BRIDGE_URL = 'ws://localhost:8435'
@@ -113,10 +111,31 @@ export default class BeaconLedgerBridge {
   }
 
   async createApp(useLedgerLive = true) {
-    if (this.app) {
-      await this.app.transport.close()
+    if (this.transport) {
+      if (useLedgerLive) {
+        try {
+          await WebSocketTransport.check(BRIDGE_URL)
+          return this.app
+        } catch (_err) {}
+      } else {
+        return this.app
+      }
     }
-    this.app = new Tezos(await TransportWebHID.create())
+
+    if (useLedgerLive) {
+      try {
+        await WebSocketTransport.check(BRIDGE_URL)
+      } catch (_err) {
+        window.open('ledgerlive://bridge?appName=Tezos Wallet')
+        await this.checkLedgerLiveTransport()
+      }
+
+      this.transport = await WebSocketTransport.open(BRIDGE_URL)
+    } else {
+      this.transport = await TransportU2F.create()
+    }
+
+    this.app = new Tezos(this.transport)
 
     return this.app
   }
@@ -124,7 +143,6 @@ export default class BeaconLedgerBridge {
   async getAddress(derivationPath = BeaconLedgerBridge.defaultDerivationPath) {
     const app = await this.createApp()
     const result = await app.getAddress(derivationPath, true)
-    alert('HARIBOL')
     return result.publicKey
   }
 
