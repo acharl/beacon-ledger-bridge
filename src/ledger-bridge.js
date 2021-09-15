@@ -111,10 +111,13 @@ export default class BeaconLedgerBridge {
   }
 
   async createApp(useLedgerLive = true) {
+    alert('### 0 ###', this.transport)
     if (this.transport) {
       if (useLedgerLive) {
         try {
           await WebSocketTransport.check(BRIDGE_URL)
+          alert('### 1 ###', this.app)
+
           return this.app
         } catch (_err) {}
       } else {
@@ -124,8 +127,12 @@ export default class BeaconLedgerBridge {
 
     if (useLedgerLive) {
       try {
+        alert('### 2 ###')
+
         await WebSocketTransport.check(BRIDGE_URL)
       } catch (_err) {
+        alert('### 3 ###')
+
         window.open('ledgerlive://bridge?appName=Tezos Wallet')
         await this.checkLedgerLiveTransport()
       }
@@ -134,6 +141,8 @@ export default class BeaconLedgerBridge {
     } else {
       this.transport = await TransportU2F.create()
     }
+
+    alert('### 4 ###', this.transport)
 
     this.app = new Tezos(this.transport)
 
